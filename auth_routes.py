@@ -4,7 +4,7 @@ from dependencies import pegar_sessao, verificar_token
 from main import bcrypt_context, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES, SECRET_KEY
 from schemas import UsuarioSchema, LoginSchema
 from sqlalchemy.orm import Session
-from jose import jwt, JWTError
+from jose import jwt
 from datetime import datetime, timedelta, timezone
 from fastapi.security import OAuth2PasswordRequestForm
 
@@ -41,7 +41,7 @@ async def criar_conta(usuario_schema: UsuarioSchema, session: Session = Depends(
         raise HTTPException(status_code=400, detail="E-mail do usuário já cadastrado")
     else:
         senha_criptografada = bcrypt_context.hash(usuario_schema.senha)
-        novo_usuario = Usuario(usuario_schema.nome, usuario_schema.email, senha_criptografada, usuario_schema.ativo, usuario_schema.admin)
+        novo_usuario = Usuario(usuario_schema.nome, usuario_schema.email, senha_criptografada)
         session.add(novo_usuario)
         session.commit()
         return {"mensagem": f"usuário cadastrado com sucesso {usuario_schema.email}"}
