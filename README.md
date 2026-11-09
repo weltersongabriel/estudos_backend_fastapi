@@ -1,173 +1,107 @@
-# 🍕 API de Pizzaria - FastAPI
+# Estudos de Backend com Python e FastAPI
 
-Este projeto consiste em uma **API Back-end para gerenciamento de pedidos de uma pizzaria**, desenvolvida utilizando **Python** e o framework FastAPI.
+Este repositório reúne meus estudos e experimentos de desenvolvimento backend com Python. A ideia é usar o código para praticar conceitos, testar recursos e acompanhar minha evolução — não apresentar uma aplicação pronta para uso em produção.
 
-O sistema permite que usuários se cadastrem, realizem login e gerenciem pedidos de pizza através de endpoints REST. Também possui autenticação utilizando **JWT (Json Web Token)**.
+Como exercício prático, o repositório contém uma API de pizzaria. O domínio de pedidos serve de contexto para explorar a construção de APIs REST com FastAPI, persistência de dados, autenticação e organização de código. Conforme os estudos avançam, o projeto pode mudar e incorporar novos aprendizados.
 
-# ⚠️ **Observação:**  
-Este projeto foi desenvolvido seguindo um **curso de FastAPI**, com o objetivo de praticar e aprofundar conhecimentos em **desenvolvimento de APIs, autenticação e organização de rotas em aplicações Back-end**.
+## O que estou estudando
 
----
+- Criação de endpoints REST com FastAPI
+- Validação e serialização de dados com Pydantic
+- Persistência e consultas com SQLAlchemy e SQLite
+- Versionamento do esquema do banco com Alembic
+- Cadastro e autenticação de usuários
+- Hash de senhas e autenticação com tokens JWT
+- Separação de rotas, modelos, schemas e dependências
+- Testes automatizados de endpoints com pytest
 
-# 🚀 Tecnologias Utilizadas
+## Tecnologias e ferramentas
 
 - Python
-- FastAPI
-- SQLAlchemy
-- Uvicorn
-- Passlib
-- Python-JOSE
-- python-dotenv
+- FastAPI e Uvicorn
+- Pydantic
+- SQLAlchemy e SQLite
+- Alembic
+- Passlib e Python-JOSE
+- pytest e HTTPX
 
----
+## Organização do repositório
 
-# 📦 Funcionalidades
-
-## 🔐 Autenticação
-- Criar conta de usuário
-- Login com email e senha
-- Geração de **Access Token**
-- Geração de **Refresh Token**
-- Autenticação usando **JWT**
-
-## 👤 Usuários
-- Cadastro de novos usuários
-- Criptografia de senha
-- Controle de permissões (usuário comum ou administrador)
-
-## 🍕 Pedidos
-- Criar pedidos
-- Cancelar pedidos
-- Finalizar pedidos
-- Listar pedidos
-- Visualizar pedido específico
-
-## 🧾 Itens do Pedido
-- Adicionar itens ao pedido
-- Remover itens do pedido
-- Cálculo automático do valor total do pedido
-
-## 🔒 Segurança
-- Rotas protegidas com autenticação
-- Verificação de permissões de usuário
-
----
-
-# 📂 Estrutura do Projeto
-
-```
-project/
-│
-├── main.py
-├── auth_routes.py
-├── order_routes.py
-├── models.py
-├── schemas.py
-├── dependencies.py
-├── database.py
-└── .env
+```text
+.
+├── .github/workflows/
+│   └── auth-service.yml  # Executa os testes de autenticação no GitHub Actions
+├── alembic/              # Configuração e versões das migrações
+├── test/
+│   └── test_user.py      # Testes das rotas de cadastro de usuário
+├── auth_routes.py        # Rotas de autenticação e cadastro
+├── dependencies.py       # Dependências de sessão e autenticação
+├── main.py               # Inicialização da aplicação e registro das rotas
+├── models.py             # Modelos SQLAlchemy e configuração do SQLite
+├── order_routes.py       # Rotas de pedidos
+└── schemas.py            # Schemas Pydantic da API
 ```
 
-### main.py
-Arquivo principal da aplicação. Responsável por inicializar o FastAPI, carregar variáveis de ambiente e registrar as rotas.
+## Executar localmente
 
-### auth_routes.py
-Contém as rotas relacionadas à autenticação:
+Os comandos abaixo foram pensados para Windows e devem ser executados a partir da raiz do repositório.
 
-- Criar conta
-- Login
-- Refresh token
+### 1. Criar e ativar um ambiente virtual
 
-### order_routes.py
-Responsável pelas rotas relacionadas aos pedidos:
-
-- Criar pedido
-- Adicionar item ao pedido
-- Remover item do pedido
-- Cancelar pedido
-- Finalizar pedido
-- Listar pedidos
-
----
-
-# ▶️ Como Executar o Projeto
-
-## 1️⃣ Clonar o repositório
-
-```bash
-git clone https://github.com/seu-usuario/seu-repositorio.git
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
 ```
 
----
+### 2. Instalar as dependências
 
-## 2️⃣ Criar ambiente virtual
+Este repositório ainda não possui um manifesto de dependências (`requirements.txt` ou `pyproject.toml`), então instale os pacotes usados pela aplicação e pelos testes:
 
-```bash
-python -m venv venv
+```powershell
+python -m pip install fastapi uvicorn sqlalchemy alembic "passlib[bcrypt]" "bcrypt<4.1" "python-jose[cryptography]" python-dotenv python-multipart pytest httpx
 ```
 
-### Ativar o ambiente
+### 3. Configurar as variáveis de ambiente
 
+Crie um arquivo `.env` na raiz do projeto:
 
-```bash
-venv\Scripts\activate
-```
-
-
----
-
-## 3️⃣ Instalar dependências
-
-```bash
-pip install -r requirements.txt
-```
-
----
-
-## 4️⃣ Criar arquivo `.env`
-
-Exemplo:
-
-```
-SECRET_KEY=sua_chave_secreta
+```dotenv
+SECRET_KEY=uma-chave-local-para-estudo
 ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=30
 ```
 
----
+Use uma chave própria no ambiente local e não compartilhe segredos reais. O workflow de CI define valores de teste separadamente.
 
-## 5️⃣ Executar o servidor
+### 4. Criar ou atualizar o banco local
 
-```bash
+```powershell
+alembic upgrade head
+```
+
+O projeto usa SQLite e configura o arquivo `banco.db` na raiz.
+
+### 5. Iniciar a API
+
+```powershell
 uvicorn main:app --reload
 ```
 
----
+A documentação interativa gerada pelo FastAPI fica disponível em:
 
-# 📚 Documentação da API
+- Swagger UI: <http://127.0.0.1:8000/docs>
+- ReDoc: <http://127.0.0.1:8000/redoc>
 
-O FastAPI gera automaticamente a documentação interativa da API.
+## Executar os testes
 
-Após rodar o projeto, acesse:
+Com o ambiente virtual ativado, as dependências instaladas, as variáveis configuradas e as migrações aplicadas:
 
+```powershell
+python -m pytest test/test_user.py -v
 ```
-http://127.0.0.1:8000/docs
-```
 
-Interface baseada no **Swagger UI**, onde é possível testar todas as rotas da API.
+O workflow em `.github/workflows/auth-service.yml` também executa esses testes em pushes e pull requests.
 
----
+## Observação
 
-# 🎯 Objetivo do Projeto
-
-Este projeto foi desenvolvido com o objetivo de:
-
-- Aprender **desenvolvimento de APIs REST**
-- Praticar **autenticação com JWT**
-- Utilizar **FastAPI em aplicações reais**
-- Praticar organização de código em projetos Back-end
-
----
-
-
-💻 Projeto desenvolvido para **estudo e prática em desenvolvimento Back-end com Python e FastAPI**.
+Este é um projeto de aprendizagem. As escolhas de implementação podem ser revistas à medida que novos assuntos forem estudados; não use a aplicação como referência de produção sem uma avaliação e as adaptações necessárias.
