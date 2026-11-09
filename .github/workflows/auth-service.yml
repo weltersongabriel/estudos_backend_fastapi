@@ -10,7 +10,7 @@ permissions:
 jobs:
   test:
     name: Run authentication tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     env:
       SECRET_KEY: ci-only-secret-key-for-tests
       ALGORITHM: HS256
@@ -23,7 +23,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.13.5"
+          python-version: "3.13"
 
       - name: Install dependencies
         run: |
